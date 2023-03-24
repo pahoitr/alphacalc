@@ -1,7 +1,71 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Versions -->
+    <MajorVersion>2</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <SuffixVersion>alpha1</SuffixVersion>
+    <Version>$(MajorVersion).$(MinorVersion).$(PatchVersion)-$(SuffixVersion)</Version>
+    <PackageVersion>$(Version)</PackageVersion>
+    <AssemblyVersion>$(MajorVersion).0.0.0</AssemblyVersion>
+    <!-- <FileVersion>$(Version)</FileVersion> -->
+    <!-- <InformationalVersion>$(Version)</InformationalVersion> -->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Assembly signing -->
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\AlphaCalc.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- NuGet packaging -->
+    <PackageId>AlphaCalc</PackageId>
+    <Authors>AlphaCalc contributors</Authors>
+    <Description>
+      AlphaCalc: basic calculator. Contains various methods such as:
+      - Sum(int, int)
+      and many more...
+    </Description>
+    <Copyright>Copyright (c) $(Authors) $([System.DateTime]::Now.ToString(yyyy)).</Copyright><!--maybe don't add this-->
+    <!-- <PackageProjectUrl></PackageProjectUrl> -->
+    <!-- <PackageIcon></PackageIcon> -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/pahoitr/alphacalc.git</RepositoryUrl>
+    <PackageTags>calculator;netstandard;alphacalc</PackageTags>
+    <!-- <PackageReleaseNotes>See https://github.com/pahoitr/alphacalc/releases</PackageReleaseNotes> -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <!-- Source Link -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Deterministic Builds -->
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="False" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>
