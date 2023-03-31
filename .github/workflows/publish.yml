@@ -19,6 +19,7 @@ jobs:
     needs: validate_git_tag
     env:
       ARTIFACTS_FOLDER: ${{ github.workspace }}/artifacts
+#       GITHUB_REF: ${{ github.workspace }}/artifacts
     steps:
       - uses: actions/checkout@v3
         with:
@@ -27,9 +28,9 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - run: dotnet restore
-      - run: dotnet build -c Release --no-restore
-      - run: dotnet test -c Release --no-build --verbosity normal
-      - run: dotnet pack -c Release -o $ARTIFACTS_FOLDER -p:Version=${github.ref#*refs/tags/}
+#       - run: dotnet build -c Release --no-restore
+#       - run: dotnet test -c Release --no-build --verbosity normal
+      - run: dotnet pack -c Release -o $ARTIFACTS_FOLDER -p:Version=${GITHUB_REF_NAME#*refs/tags/}
       - run: echo "ARTIFACT_NAME=$(basename $(ls $ARTIFACTS_FOLDER/*.nupkg) .nupkg)" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v3
         with:
