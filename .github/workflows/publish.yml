@@ -29,7 +29,7 @@ jobs:
       - run: dotnet restore
       - run: dotnet build -c Release --no-restore
       - run: dotnet test -c Release --no-build --verbosity normal
-      - run: dotnet pack -c Release -o $ARTIFACTS_FOLDER
+      - run: dotnet pack -c Release -o $ARTIFACTS_FOLDER -p:Version=${github.ref#*refs/tags/}
       - run: echo "ARTIFACT_NAME=$(basename $(ls $ARTIFACTS_FOLDER/*.nupkg) .nupkg)" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v3
         with:
@@ -70,15 +70,15 @@ jobs:
           makeLatest: true
   #           prerelease: ..regex
 
-  nuget_push:
-    runs-on: ubuntu-latest
-    needs: github_release
-    env:
-      ARTIFACTS_FOLDER: ${{ github.workspace }}/artifacts
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          path: ${{ env.ARTIFACTS_FOLDER }}
-      - run: echo "ARTIFACT_NAME=$(basename $(ls $ARTIFACTS_FOLDER/**/*.nupkg) .nupkg)" >> $GITHUB_ENV
-      - run: dotnet nuget push ${{ env.ARTIFACTS_FOLDER }}/**/${{ env.ARTIFACT_NAME }}.nupkg --api-key "${{ secrets.NUGET_KEY }}" --source https://api.nuget.org/v3/index.json
-        if: ${{ success() }}
+#   nuget_push:
+#     runs-on: ubuntu-latest
+#     needs: github_release
+#     env:
+#       ARTIFACTS_FOLDER: ${{ github.workspace }}/artifacts
+#     steps:
+#       - uses: actions/download-artifact@v3
+#         with:
+#           path: ${{ env.ARTIFACTS_FOLDER }}
+#       - run: echo "ARTIFACT_NAME=$(basename $(ls $ARTIFACTS_FOLDER/**/*.nupkg) .nupkg)" >> $GITHUB_ENV
+#       - run: dotnet nuget push ${{ env.ARTIFACTS_FOLDER }}/**/${{ env.ARTIFACT_NAME }}.nupkg --api-key "${{ secrets.NUGET_KEY }}" --source https://api.nuget.org/v3/index.json
+#         if: ${{ success() }}
